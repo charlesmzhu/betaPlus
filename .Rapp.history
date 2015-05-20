@@ -1,0 +1,208 @@
+d <- 3
+d*3
+rep(d,10)
+College
+fix(College)
+Yale University
+College$Yale University
+fix(College)
+College = College [,-1]
+College
+fix(College)
+library()
+load(College)
+library(College)
+College
+fix(College)
+rownames(College) = College[,1]
+fix(College)
+College = College[,-1]
+fix(College)
+sum(College)
+s(College)
+summary(College)
+pairs(College[,1:10])
+plot(College$Outstate, College$Private)
+fix(College)
+College$Private
+Colllege
+College
+College[,1]
+names(College)
+College
+rownames(College) = rownames [,1]
+rownames(College) = College[,1]
+fix(College)
+Private
+College$Private
+plot(College$Outstate, College$Private)
+College$Outstate
+plot(College$Private, College$Outstate)
+Elite = rep("No", nrow(college))
+Elite = rep("No", nrow(College))
+Elite
+Elite[college$Top10Perc > 50]="Yes"
+Elite[College$Top10Perc > 50]="Yes"
+College$Top10Perc
+College
+names(College)
+Elite[College$Top10perc > 50]="Yes"
+Elite
+Elite=as.factor(Elite)
+Elite
+c(College, Elite)
+c(Elite,College)
+College$Elite = Elite
+College
+names(College)
+data.frame(College,Elite)
+summary(College)
+plot(Elite,Outstate)
+plot( College$Elite , College$Outstate)
+College[,-5:10]
+College[,-1]
+College[,-5:-7]
+College[,-2:-10]
+names(College)
+names(College[,-1:10])
+names(College[,-1:-10])
+load(Boston)
+library(MASS)
+fix(Boston)
+?Boston
+lm.fit=lm(medv~lstat,data=Boston)
+attach(Boston)
+lm.fit
+summary(lm.fit)
+Boston?
+e
+?Boston
+abline(abfit)
+abline(lm.fit)
+plot(lstate,medv)
+plot(lstat,medv)
+abline(lm.fit)
+par(mfrow=c(2,2))
+plot(lstat,medv)
+plot(predict(lm.fit), residuals(lm.fit()))
+plot(predict(lm.fit), residuals(lm.fit))
+ls()
+stockList
+stockList <- read.table("constituents.csv")
+stockList <- read.table("constituents.csv", header=TRUE, sep =",")
+stockList
+stockList <- read.table("constituents.csv", header=TRUE, sep =",")
+stockList <- read.table("constituents.csv", header=TRUE, sep =",")
+stockList <- read.table("constituents.csv", sep =",")
+stockList
+stockList <- read.table("constituents.csv")
+stockList
+names(stockList)
+stockList <- read.table("constituents.csv", header = TRUE, sep=",")
+names(stockList)
+stocklist[1,]
+stockList[1]
+}
+}
+return(root)
+return(url)
+getUrl ("MSFT")
+getUrl <- function (symbol) {
+stockList <- read.table("constituents.csv", header = TRUE, sep=",")#
+#
+getUrl <- function (symbol) {#
+	url <- paste("http://api.kibot.com/?action=history&symbol=", symbol, "&interval=daily&period=10000", sep = "")#
+	return(url)#
+}#
+#
+getUrl ("MSFT")
+stockList <- read.table("constituents.csv", header = TRUE, sep=",")#
+#
+getUrl <- function (symbol) {#
+	url <- paste("http://api.kibot.com/?action=history&symbol=", symbol, "&interval=daily&period=10000", sep = "")#
+	return(url)#
+}#
+#
+getUrl ("MSFT")
+q
+exit
+stockList <- read.table("constituents.csv", header = TRUE, sep=",")#
+#
+getUrl <- function (symbol) {#
+	url <- paste("http://api.kibot.com/?action=history&symbol=", symbol, "&interval=daily&period=10000", sep = "")#
+	return(url)#
+}#
+#
+getUrl ("MSFT")
+dim(stockList)
+getUrl( "MSFT ")
+stockList <- read.table("constituents.csv", header = TRUE, sep=",")#
+#
+getUrl <- function (symbol) {#
+	url <- paste("http://api.kibot.com/?action=history&symbol=", symbol, "&interval=daily&period=10000", sep = "")#
+	return(url)#
+}#
+table <- read.csv ( getUrl ("MSFT") )
+table
+stockList <- stockList[,1]
+stockList
+stockList[0]
+stockList[1]
+String(stockList[1])
+as.string(stockList[1])
+toString(stockList[1])
+table <- read.csv ( toString(stockList[1]) )
+table <- read.csv ( "MSFT" )
+table <- read.csv ( getUrl ( toString(stockList[1]) ) )
+table
+names(table)
+table[1,]
+t(table)
+table
+table[0,2]
+table[0,]
+table[1,]
+table[1,2]
+typeof(table)
+SPX <- read.csv ( getUrl ( "$SPX") )
+SPX
+stockList <- read.table("constituents.csv", header = TRUE, sep=",")[,1]
+stockList
+table
+SPX
+percentClose <- function ( list ) {#
+	return ( ( list[, 4] - list[, 1] ) / list [, 1] )#
+}
+percentClose( SPX )
+SPX
+typeof(SPX)
+SPX[3,3]
+typeof(SPX[3,3])
+SPX[3,4] - SPX[3,1]
+SPX[3,4] - SPX[3,2]
+SPX[3,]
+SPX[3,0]
+SPX[0,0]
+SPX[0,]
+SPX[,0]
+percentClose <- function ( list ) {#
+	return ( ( list[, 5] - list[, 2] ) / list [, 2] )#
+}
+percentClose ( SPX )
+percentClose <- function ( list ) {#
+	return ( ( list[, 5] - list[, 2] ) / list [, 2] )*100#
+}
+percentClose ( SPX )
+percentClose <- function ( list ) {#
+	return ( ( list[, 5] - list[, 2] ) / list [, 2] * 100 )#
+}
+percentClose ( SPX )
+percentChange <- function ( list ) {#
+	return ( ( list[, 5] - list[, 2] ) / list [, 2] * 100 )#
+}
+testSet <- percentChange(list)
+testSet <- percentChange( SPX )
+testSet
+testList
+sum ( testSet > 0 )
+sum( testSet < 0 )
