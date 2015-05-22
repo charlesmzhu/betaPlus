@@ -1,208 +1,779 @@
-d <- 3
-d*3
-rep(d,10)
-College
-fix(College)
-Yale University
-College$Yale University
-fix(College)
-College = College [,-1]
-College
-fix(College)
-library()
-load(College)
-library(College)
-College
-fix(College)
-rownames(College) = College[,1]
-fix(College)
-College = College[,-1]
-fix(College)
-sum(College)
-s(College)
-summary(College)
-pairs(College[,1:10])
-plot(College$Outstate, College$Private)
-fix(College)
-College$Private
-Colllege
-College
-College[,1]
-names(College)
-College
-rownames(College) = rownames [,1]
-rownames(College) = College[,1]
-fix(College)
-Private
-College$Private
-plot(College$Outstate, College$Private)
-College$Outstate
-plot(College$Private, College$Outstate)
-Elite = rep("No", nrow(college))
-Elite = rep("No", nrow(College))
-Elite
-Elite[college$Top10Perc > 50]="Yes"
-Elite[College$Top10Perc > 50]="Yes"
-College$Top10Perc
-College
-names(College)
-Elite[College$Top10perc > 50]="Yes"
-Elite
-Elite=as.factor(Elite)
-Elite
-c(College, Elite)
-c(Elite,College)
-College$Elite = Elite
-College
-names(College)
-data.frame(College,Elite)
-summary(College)
-plot(Elite,Outstate)
-plot( College$Elite , College$Outstate)
-College[,-5:10]
-College[,-1]
-College[,-5:-7]
-College[,-2:-10]
-names(College)
-names(College[,-1:10])
-names(College[,-1:-10])
-load(Boston)
-library(MASS)
-fix(Boston)
-?Boston
-lm.fit=lm(medv~lstat,data=Boston)
-attach(Boston)
-lm.fit
-summary(lm.fit)
-Boston?
-e
-?Boston
-abline(abfit)
-abline(lm.fit)
-plot(lstate,medv)
-plot(lstat,medv)
-abline(lm.fit)
-par(mfrow=c(2,2))
-plot(lstat,medv)
-plot(predict(lm.fit), residuals(lm.fit()))
-plot(predict(lm.fit), residuals(lm.fit))
-ls()
-stockList
-stockList <- read.table("constituents.csv")
-stockList <- read.table("constituents.csv", header=TRUE, sep =",")
-stockList
-stockList <- read.table("constituents.csv", header=TRUE, sep =",")
-stockList <- read.table("constituents.csv", header=TRUE, sep =",")
-stockList <- read.table("constituents.csv", sep =",")
-stockList
-stockList <- read.table("constituents.csv")
-stockList
-names(stockList)
-stockList <- read.table("constituents.csv", header = TRUE, sep=",")
-names(stockList)
-stocklist[1,]
-stockList[1]
-}
-}
-return(root)
-return(url)
-getUrl ("MSFT")
-getUrl <- function (symbol) {
-stockList <- read.table("constituents.csv", header = TRUE, sep=",")#
+eval(parse("symb"))
+eval(parse("symb")) <- "hello"
+beta
+as.data.frame(beta)
+rownames(as.data.frame(beta))
+t(as.data.frame(beta))
+symb
+as.string("symb")
+string("symb")
+as.char(symb)
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="yahoo", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,6] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,6] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
 #
-getUrl <- function (symbol) {#
-	url <- paste("http://api.kibot.com/?action=history&symbol=", symbol, "&interval=daily&period=10000", sep = "")#
-	return(url)#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Beta Bull Daily/ Beata Bear Daily Ratio")#
+	rownames (t(as.data.frame(betaVec))) <- symb#
+	return (betaVec)#
+}#
+getBeta ( "IBM", "^GSPC" )#
+beta
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="yahoo", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,6] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,6] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Beta Bull Daily/ Beata Bear Daily Ratio")#
+	rownames ( t ( as.data.frame ( betaVec ) ) ) <- symb#
+	return (betaVec)#
+}
+getBeta ( "IBM", "^GSPC" )
+t(as.data.frame(beta))
+rownames(t(as.data.frame(beta))) <- "IBM"
+t(as.data.frame(beta))
+typeof(t(as.data.frame(beta)))
+bets
+beta
+t(beta)
+as.data.frame(t(beta))
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="yahoo", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,6] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,6] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Beta Bull Daily/ Beata Bear Daily Ratio")#
+	rownames ( as.data.frame t ( ( betaVec ) ) ) <- symb#
+	return (betaVec)#
+}#
+getBeta ( "IBM", "^GSPC" )#
+beta
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="yahoo", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,6] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,6] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Beta Bull Daily/ Beata Bear Daily Ratio")#
+	rownames ( as.data.frame t ( ( betaVec ) ) ) <- symb#
+	return (betaVec)#
+}
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="yahoo", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,6] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,6] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Beta Bull Daily/ Beata Bear Daily Ratio")#
+	rownames ( as.data.frame t ( ( betaVec ) ) ) <- symb#
+	return (betaVec)#
+}
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="yahoo", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,6] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,6] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Beta Bull Daily/ Beata Bear Daily Ratio")#
+	rownames ( as.data.frame ( t ( betaVec ) ) ) <- symb#
+	return (betaVec)#
+}
+getBeta ( "IBM", "^GSPC" )#
+beta
+t(beta)
+as.data.frame(t(beta))
+rownames ( as.data.frame(t(beta)) ) <- "test"
+as.data.frame(t(beta))
+beta <- as.data.frame(t(beta))
+beta
+rownames(beta)
+rownames(beta) <- "hello"
+beta
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="yahoo", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,6] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,6] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Beta Bull Daily/ Beata Bear Daily Ratio")#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	rownames ( betaVec ) <- symb#
+	return (betaVec)#
+}#
+getBeta ( "IBM", "^GSPC" )#
+beta
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="yahoo", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,6] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,6] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Beta Bull Daily/ Beata Bear Daily Ratio")#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	rownames ( betaVec ) <- symb#
+	return (betaVec)#
+}#
+getBeta ( "IBM", "^GSPC" )#
+beta
+AAbeta <- getBeta ("AA", "^GSPC")#
+IBMbetas <- getBeta ( "IBM", "^GSPC" )
+c(AAbeta, IBMbetas)
+AAbeta
+IBMbetas
+c(AAbeta[1,], IBMbetas)
+merge(AAbeta, IBMbetas)
+rbind(AAbeta, IBMbetas)
+df < data.frame()
+df <- data.frame(NULL)
+df
+getBetas <- function ( symbvec, bench ) {#
+	df < data.frame(df)#
+	for ( i in symbvec ) {#
+		df <- rbind (df, symbvec[i])#
+	}#
+	return (df)#
+}
+symbvec = Vector(c("AA","GSPC"))
+symbvec = c("AA","GSPC")
+symbvec
+typeof symbvec
+typeof(symbvec)
+symbvec = as.vector(c("AA","GSPC"))
+typeof(symbvec)
+symbvec
+symbvec <- as.vector(symbvec)
+symbvec
+typeof (symbvec)
+for (i in symbvec) {#
+	symbvec[i]#
+}
+for (i in symbvec) {#
+	print ( symbvec[i] )#
+}
+symbvec[1]
+for (i in symbvec) {#
+	print ( i )#
+}
+getBetas <- function ( symbvec, bench ) {#
+	df < data.frame(df)#
+	for ( i in symbvec ) {#
+		df <- rbind (df, i)#
+	}#
+	return (df)#
+}
+#Should be strings#
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="yahoo", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,6] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,6] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Beta Bull Daily/ Beata Bear Daily Ratio")#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	rownames ( betaVec ) <- symb#
+	return (betaVec)#
+}
+vec = c("RAS", "RSO", "MDLNF")
+getBetas(vec, "^GSPC")
+getBetas <- function ( symbvec, bench ) {#
+	df < data.frame(NULL)#
+	for ( i in symbvec ) {#
+		beta <- getBeta( i, bench)#
+		df <- rbind (df, beta)#
+	}#
+	return (df)#
+}
+getBetas( vec, "^GSPC")
+symbvec = c("RAS", "RSO", "MDLNF")#
+#
+getBetas( symbvec, "^GSPC")
+symbvec = c("RAS", "RSO", "MDLNF")
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		beta <- getBeta( i, bench)#
+		df <- rbind (df, beta)#
+	}#
+	return (df)#
+}
+getBetas( symbvec, "^GSPC")
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="yahoo", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,6] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,6] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Bull/Bear Daily (Ratio)")#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	rownames ( betaVec ) <- symb#
+	return (betaVec)#
+}
+symbvec <- c("RAS", "RSO", "MDLNF")
+getBetas( symbvec, "^GSPC")
+######## load data ########
+#
+stockList <- as.vector(read.table("constituents.csv", header = TRUE, sep=",")[,1])#
+tenstocks <- as.vector(stockList[1:10])
+stockList
+spybetas <- getBetas ( stockList, "^GSPC")
+sysbetas
+spybetas
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		beta <- tryCatch(#
+			getBeta ( i, bench ),#
+			error = function (cond) {#
+				message(paste("Symbol does not seem to exist:", i))#
+          		message("Here's the original error message:")#
+            	message(cond)#
+            	return(NA)#
+			}, next#
+		)#
+		df <- rbind (df, beta)#
+	}#
+	return (df)#
+}
+spybetas <- getBetas ( stockList, "^GSPC")
+spybetas
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		beta <- tryCatch(#
+			getBeta ( i, bench ),#
+			error = function (cond) {#
+				message(paste("Symbol does not seem to exist:", i))#
+          		message("Here's the original error message:")#
+            	message(cond)#
+            	return(NA)#
+			}, next#
+		)#
+		df <- rbind (df, beta)#
+	}#
+	return (df)#
+}
+spybetas <- getBetas ( stockList, "^GSPC")
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		beta <- tryCatch(#
+			getBeta ( i, bench ),#
+			error = function (cond) {#
+				message(paste("Symbol does not seem to exist:", i))#
+          		message("Here's the original error message:")#
+            	message(cond)#
+			}, next#
+		)#
+		df <- rbind (df, beta)#
+	}#
+	return (df)#
+}
+spybetas <- getBetas ( stockList, "^GSPC")
+spybetas
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		beta <- tryCatch(#
+			getBeta ( i, bench ),#
+			error = function (cond) {#
+				message(paste("Symbol does not seem to exist:", i))#
+          		message("Here's the original error message:")#
+            	message(cond)#
+			}, next#
+		)#
+		getBeta(i,bench)#
+		df <- rbind (df, beta)#
+	}#
+	return (df)#
+}
+spybetas <- getBetas ( stockList, "^GSPC")
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		beta <- tryCatch(getBeta ( i, bench ), error = function (e) print(e), next)#
+		getBeta(i,bench)#
+		df <- rbind (df, beta)#
+	}#
+	return (df)#
+}
+spybetas <- getBetas ( stockList, "^GSPC")
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		tryCatch(getBeta ( i, bench ), error = function (e) print(e), next)#
+		getBeta(i,bench)#
+		df <- rbind (df, beta)#
+	}#
+	return (df)#
+}
+spybetas <- getBetas ( stockList, "^GSPC")
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		tryCatch(getBeta ( i, bench ), error = function (e) NULL)#
+		df <- rbind (df, beta)#
+	}#
+	return (df)#
+}
+spybetas <- getBetas ( stockList, "^GSPC")
+spybetas
+stockList
+symbvec = c("MMM", "ABT", "ABBV")
+for ( i in symbvec ) {#
+		tryCatch(getBeta ( i, bench ), error = function (e) NULL)#
+		df <- rbind (df, beta)#
+	}#
+	return (df)
+df <- data.frame(null)
+df <- data.frame(NULL)
+for ( i in symbvec ) {#
+		tryCatch(getBeta ( i, bench ), error = function (e) NULL)#
+		df <- rbind (df, beta)#
+	}
+df
+df
+symb
+symbvec = c("MMM")
+df <- data.frame(NULL)#
+for ( i in symbvec ) {#
+		tryCatch(getBeta ( i, bench ), error = function (e) NULL)#
+		df <- rbind (df, beta)#
+	}
+symbvec
+df
+getBeta( "MMM", "^GSPC" )
+symbvec
+symbvec = c("MMM", "AA")
+for ( i in symbvec ) {#
+		getBeta ( i, bench )#
+		df <- rbind (df, beta)#
+}
+df <- data.frame(NULL)#
+for ( i in symbvec ) {#
+		getBeta ( i, "^GSPC" )#
+		df <- rbind (df, beta)#
+}
+df
+df
+df <- data.frame(NULL)#
+for ( i in symbvec ) {#
+		print(i)#
+	#	getBeta ( i, "^GSPC" )#
+}
+df <- data.frame(NULL)#
+for ( i in symbvec ) {#
+		print(as.char(i))#
+	#	getBeta ( i, "^GSPC" )#
+}
+print(toString(i))
+for ( i in symbvec ) {#
+		print(typeof(i))#
+	#	getBeta ( i, "^GSPC" )#
+}
+for ( i in symbvec ) {#
+		print(typeof(i))#
+	#	getBeta ( i, "^GSPC" )#
+}
+symbvec
+df <- data.frame(NULL)#
+for ( i in symbvec ) {#
+		print(typeof(i))#
+		test <- getBeta ( i, "^GSPC" )#
+		test#
+}
+test
+rbind(df, test)
+df
+df
+df
+df
+df
+df
+df
+df
+df
+df
+df
+df <- data.frame(NULL)#
+for ( i in symbvec ) {#
+		print(typeof(i))#
+		test <- getBeta ( i, "^GSPC" )#
+		df< - rbind(df, test)#
+}
+for ( i in symbvec ) {#
+		print(typeof(i))#
+		test <- getBeta ( i, "^GSPC" )#
+		rbind(df, test)#
+}
+test
+df
+df == NULL
+df <- data.frame(NULL)#
+for ( i in symbvec ) {#
+		print(typeof(i))#
+		test <- getBeta ( i, "^GSPC" )#
+		if (nrow(df)==0) df = test#
+		else rbind(df, test)#
+}
+df
+df
+df
+df
+test
+df
+test
+symbvec
+df <- data.frame(NULL)#
+for ( i in symbvec ) {#
+		print(typeof(i))#
+		test <- getBeta ( i, "^GSPC" )#
+		if (nrow(df)==0) { df <- test }#
+		else { df <- rbind(df, test) }#
+}
+df
+symbvec
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		df <- rbind (df, beta)#
+	for ( i in symbvec ) {#
+		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench ), error = function (e) NULL) }#
+		else { tryCatch( df <- rbind( df, getBeta ( i, bench ) ), error = function (e) NULL) }#
+	}#
+	return (df)#
+}
+)
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench ), error = function (e) NULL) }#
+		else { tryCatch( df <- rbind( df, getBeta ( i, bench ) ), error = function (e) NULL) }#
+	}#
+	return (df)#
+}
+getBetas (symbvec, bench)
+bench
+bench <- "^GSPC"
+bench
+getBetas ( symbvec, bench )
+spybetas <- getBetas ( stockList, "^GSPC")
+spybetas
+sort( spybetas )
+order(spybetas)
+ospybetas
+spybetas
+spybetas.sortedMonthly <- spybetas [ order("Bull/Bear Ratio"), ]
+spybetas.sortedMonthly
+spybetas
+spybetas[order(Betas), ]
+spybetas[order(Beta), ]
+spybetas[order("Beta"), ]
+names(spybetas)
+spybetas[order("Beta"),]
+spybetas
+dim(spybetas)
+as.vector(read.table("constituents.csv", header = TRUE, sep=",")[,1])
+spybetas
+spybetas
+spybetas
+spybetas["Bull/Bear Ratio",]
+spybetas[,"Bull/Bear Ratio"]
+order("Bull/Bear Ratio")
+spybetas[order("Bull/Bear Ratio"), ]
+spybetas[, order("Bull/Bear Ratio")]
+spybetas
+spybetas
+spybetas
+spybetas
+spybetas[order("Beta")]
+typeof(spybeta[3,3])
+typeof(spybetas[3,3])
+typeof(spybetas)
+spybetas$Betas
+spybetas$Beta
+order(spybetas$Beta)
+spybetas[order(spybetas$Beta),]
+spybetas$Bull/Bear Ratio
+spybetas$"Bull/Bear Ratio"
+order(spybetas$"Bull/Bear Ratio")
+spybetas[order(spybetas$"Bull/Bear Ratio")]
+spybetas[order(spybetas$"Bull/Bear Ratio"),]
+spybetas[order(spybetas$"Bull/Bear Daily (Ratio)"),]
+monthlyRatioOrder <- spybetas[order(spybetas$"Bull/Bear Ratio"),]#
+dailyRatioOrder <- spybetas[order(spybetas$"Bull/Bear Daily (Ratio)"),]
+write.table(monthlyRatioOrder, "TopBullBearBetaRatioMonthly.csv", sep=",")#
+write.table(dailyRatioOrder, "TopBullBearBetaRatioDaily.csv", sep=",")
+dailyBearOrder <- spybetas[order(spybetas$"Beta Bear Daily"), ]
+write.table(dailyBearOrder, "TopBullBearBetaRatioDaily.csv", sep=",")
+dailyBearOrder
+C <- getSymbols ( "C", src="yahoo", auto.assign=FALSE )#
+GSPC <- getSymbols ( "^GSPC", src="yahoo", auto.assign=FALSE)
+X
+C
+plot(C)
+lines(GSPC)
+plot(C)
+C[1,]
+GSPC[1,]
+plot(GSPC)
+lines(C)
+points(C)
+plot(C)
+C
+C <- getSymbols ( " ", src="yahoo", auto.assign=FALSE )
+C <- getSymbols ( "C", src="google", auto.assign=FALSE )
+C
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench ), error = function (e) NULL) }#
+		else { tryCatch( df <- rbind( df, getBeta ( i, bench ) ), error = function (e) NULL) }#
+	}#
+	return (df)#
 }#
 #
-getUrl ("MSFT")
-stockList <- read.table("constituents.csv", header = TRUE, sep=",")#
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="google", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="google", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,6] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,6] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
 #
-getUrl <- function (symbol) {#
-	url <- paste("http://api.kibot.com/?action=history&symbol=", symbol, "&interval=daily&period=10000", sep = "")#
-	return(url)#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Bull/Bear Daily (Ratio)")#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	rownames ( betaVec ) <- symb#
+	return (betaVec)#
 }#
 #
-getUrl ("MSFT")
-q
-exit
-stockList <- read.table("constituents.csv", header = TRUE, sep=",")#
-#
-getUrl <- function (symbol) {#
-	url <- paste("http://api.kibot.com/?action=history&symbol=", symbol, "&interval=daily&period=10000", sep = "")#
-	return(url)#
+spybetas <- getBetas ( stockList, "^GSPC")#
+monthlyRatioOrder <- spybetas[order(spybetas$"Bull/Bear Ratio"),]#
+dailyRatioOrder <- spybetas[order(spybetas$"Bull/Bear Daily (Ratio)"),]#
+dailyBearOrder <- spybetas[order(spybetas$"Beta Bear Daily"), ]#
+write.table(monthlyRatioOrder, "TopBullBearBetaRatioMonthly.csv", sep=",")#
+write.table(dailyRatioOrder, "TopBullBearBetaRatioDaily.csv", sep=",")#
+write.table(dailyBearOrder, "TopBullBearBetaRatioDaily.csv", sep=",")#
+C <- getSymbols ( " ", src="google", auto.assign=FALSE )#
+GSPC <- getSymbols ( "^GSPC", src="google", auto.assign=FALSE)
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench ), error = function (e) NULL) }#
+		else { tryCatch( df <- rbind( df, getBeta ( i, bench ) ), error = function (e) NULL) }#
+	}#
+	return (df)#
 }#
 #
-getUrl ("MSFT")
-dim(stockList)
-getUrl( "MSFT ")
-stockList <- read.table("constituents.csv", header = TRUE, sep=",")#
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="google", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="google", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,6] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,6] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
 #
-getUrl <- function (symbol) {#
-	url <- paste("http://api.kibot.com/?action=history&symbol=", symbol, "&interval=daily&period=10000", sep = "")#
-	return(url)#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Bull/Bear Daily (Ratio)")#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	rownames ( betaVec ) <- symb#
+	return (betaVec)#
 }#
-table <- read.csv ( getUrl ("MSFT") )
-table
-stockList <- stockList[,1]
-stockList
-stockList[0]
-stockList[1]
-String(stockList[1])
-as.string(stockList[1])
-toString(stockList[1])
-table <- read.csv ( toString(stockList[1]) )
-table <- read.csv ( "MSFT" )
-table <- read.csv ( getUrl ( toString(stockList[1]) ) )
-table
-names(table)
-table[1,]
-t(table)
-table
-table[0,2]
-table[0,]
-table[1,]
-table[1,2]
-typeof(table)
-SPX <- read.csv ( getUrl ( "$SPX") )
-SPX
-stockList <- read.table("constituents.csv", header = TRUE, sep=",")[,1]
-stockList
-table
-SPX
-percentClose <- function ( list ) {#
-	return ( ( list[, 4] - list[, 1] ) / list [, 1] )#
+#
+spybetas <- getBetas ( stockList, ".INX")#
+monthlyRatioOrder <- spybetas[order(spybetas$"Bull/Bear Ratio"),]#
+dailyRatioOrder <- spybetas[order(spybetas$"Bull/Bear Daily (Ratio)"),]#
+dailyBearOrder <- spybetas[order(spybetas$"Beta Bear Daily"), ]#
+write.table(monthlyRatioOrder, "TopBullBearBetaRatioMonthly.csv", sep=",")#
+write.table(dailyRatioOrder, "TopBullBearBetaRatioDaily.csv", sep=",")#
+write.table(dailyBearOrder, "TopBullBearBetaRatioDaily.csv", sep=",")
+spybetas
+getBeta( "AA", ".INX" )
+getBeta( "AA", "INX" )
+getBeta( "AA", "SPY" )
+getBeta( "AA", ".INX" )
+getBeta( "AA", "^GSPC" )
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="google", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,6] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,6] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Bull/Bear Daily (Ratio)")#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	rownames ( betaVec ) <- symb#
+	return (betaVec)#
 }
-percentClose( SPX )
-SPX
-typeof(SPX)
-SPX[3,3]
-typeof(SPX[3,3])
-SPX[3,4] - SPX[3,1]
-SPX[3,4] - SPX[3,2]
-SPX[3,]
-SPX[3,0]
-SPX[0,0]
-SPX[0,]
-SPX[,0]
-percentClose <- function ( list ) {#
-	return ( ( list[, 5] - list[, 2] ) / list [, 2] )#
+getBeta( "AA", "^GSPC" )
+b <- getSymbols ( "^GSPC", src="yahoo", auto.assign=FALSE)
+b
+d <- getSymbols ( "AA", src="google", auto.assign=FALSE)
+d
+dr <- monthlyReturn ( d[,6] )
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="google", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,4] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,4] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Bull/Bear Daily (Ratio)")#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	rownames ( betaVec ) <- symb#
+	return (betaVec)#
 }
-percentClose ( SPX )
-percentClose <- function ( list ) {#
-	return ( ( list[, 5] - list[, 2] ) / list [, 2] )*100#
-}
-percentClose ( SPX )
-percentClose <- function ( list ) {#
-	return ( ( list[, 5] - list[, 2] ) / list [, 2] * 100 )#
-}
-percentClose ( SPX )
-percentChange <- function ( list ) {#
-	return ( ( list[, 5] - list[, 2] ) / list [, 2] * 100 )#
-}
-testSet <- percentChange(list)
-testSet <- percentChange( SPX )
-testSet
-testList
-sum ( testSet > 0 )
-sum( testSet < 0 )
+spybetas <- getBetas ( stockList, ".INX")#
+monthlyRatioOrder <- spybetas[order(spybetas$"Bull/Bear Ratio"),]#
+dailyRatioOrder <- spybetas[order(spybetas$"Bull/Bear Daily (Ratio)"),]#
+dailyBearOrder <- spybetas[order(spybetas$"Beta Bear Daily"), ]#
+write.table(monthlyRatioOrder, "TopBullBearBetaRatioMonthly.csv", sep=",")#
+write.table(dailyRatioOrder, "TopBullBearBetaRatioDaily.csv", sep=",")#
+write.table(dailyBearOrder, "TopBullBearBetaRatioDaily.csv", sep=",")
+spybetas
+warnings()
+spybetas <- getBetas ( stockList, "^GSPC")#
+monthlyRatioOrder <- spybetas[order(spybetas$"Bull/Bear Ratio"),]#
+dailyRatioOrder <- spybetas[order(spybetas$"Bull/Bear Daily (Ratio)"),]#
+dailyBearOrder <- spybetas[order(spybetas$"Beta Bear Daily"), ]#
+write.table(monthlyRatioOrder, "TopBullBearBetaRatioMonthly.csv", sep=",")#
+write.table(dailyRatioOrder, "TopBullBearBetaRatioDaily.csv", sep=",")#
+write.table(dailyBearOrder, "TopBullBearBetaRatioDaily.csv", sep=",")
+monthlyRatioOrder
+dailyRatioOrder
+dailyBearOrder
