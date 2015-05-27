@@ -1,25 +1,31 @@
 ######## load data #######
 
-stockList <- as.vector(read.table("constituents.csv", header = TRUE, sep=",")[,1])
+stockList <- as.vector(read.table("constituents1.csv", header = TRUE, sep=",", quote="")[,1])
 tenstocks <- as.vector(stockList[1:10])
 
 ########################### with packages ############################
 require(quantmod)
 require(PerformanceAnalytics)
 
-getBetas <- function ( symbvec, bench ) {
+getBetas <- function ( symbvec, bench, date = "2014-1-1" ) {
 	df <- data.frame(NULL)
 	for ( i in symbvec ) {
-		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench ), error = function (e) NULL) }
-		else { tryCatch( df <- rbind( df, getBeta ( i, bench ) ), error = function (e) NULL) }
-	}
+		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench, date ), error = function (e) NULL) } # Creates df if no data
+		else { tryCatch( df <- rbind( df, getBeta ( i, bench, date ) ), error = function (e) NULL) }
+	} # rbinds data to master data frame
 	return (df)
 }
 
-getBeta <- function ( symb, bench, period = "monthly" ) {
-	d <- getSymbols ( symb, src="google", auto.assign=FALSE)
+
+
+getBeta <- function ( symb, bench, date = "2014-1-1" ) {
+	d <- getSymbols ( symb, src="google", auto.assign=FALSE) # Use google for most symbols because of errors
 	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)
 		
+
+	d <- d[index(d) > date]
+	b <- b[index(b) > date]
+
 	dr <- monthlyReturn ( d[,4] )
 	br <- monthlyReturn ( b[,6] )
 	
