@@ -1,25 +1,813 @@
 d <- 3
 d*3
 rep(d,10)
-dir
-ls
-dir()
-dir()[5]
-read.table(dir()[5],sep=",")
-t <- read.table(dir()[5] , sep=",")
-t
-names(t)
-t$Bull.Bear.Daily..Ratio
-names(t)
-t
-t$Bull.Bear.Daily..Ratio
-t[,6]
-t[,7]
-t[,8]
-t[,9]
-rownames(t)
-rownames(t,t$Bull.Bear.Daily..Ratio)
-c ( rownames(t), t$Bull.Bear.Daily..Ratio)
-rbind ( rownames(t), t$Bull.Bear.Daily..Ratio)
-cbind ( rownames(t), t$Bull.Bear.Daily..Ratio)
-require("xtable")
+attach(Caravan)
+sum(weekly)
+attach(Weekly)
+Weekly
+detach(Caravan)
+attach(Weekly)
+sum(Weekly)
+summary(Weekly)
+plot(weekly)
+plot(Weekly)
+stockList <- as.vector(read.table("constituents.csv", header = TRUE, sep=",")[,1])#
+tenstocks <- as.vector(stockList[1:10])
+tenstocks
+stockList
+read.table("constituents.csv", header = TRUE, sep=",")[,1]
+read.table("constituents.csv", header = TRUE, sep=",")
+read.table("constituents.csv", header = TRUE, sep=",")[,1]
+require(quantmod)#
+require(PerformanceAnalytics)
+dim(stockList)
+length(stockList)
+read.table("constituents.csv", header = TRUE)
+read.csv("constituents.csv", header = TRUE)
+stockList <- as.vector(read.csv("constituents.csv", header = TRUE)[,1])
+tenstocks <- as.vector(stockList[1:10])
+length(stockList)
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench ), error = function (e) NULL) }#
+		else { tryCatch( df <- rbind( df, getBeta ( i, bench ) ), error = function (e) NULL) }#
+	}#
+	return (df)#
+}
+getBeta <- function ( symb, bench, period = "monthly" ) {#
+	d <- getSymbols ( symb, src="google", auto.assign=FALSE)#
+	b <- getSymbols ( bench, src="yahoo", auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,4] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,4] )#
+	brd <- dailyReturn ( b[,6] )#
+	beta <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+	beta.bear <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+	beta.daily <- round( CAPM.beta ( dr, br ), digits = 3 )#
+	beta.bull.daily <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+	beta.bear.daily <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+#
+	betaVec <- c(beta, beta.bull, beta.bear, beta.bull/beta.bear, beta.daily, beta.bull.daily, beta.bear.daily, beta.bull.daily/beta.bear.daily)#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Bull/Bear Daily (Ratio)")#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	rownames ( betaVec ) <- symb#
+	return (betaVec)#
+}
+getSymbols?
+)
+?getSymbols
+getSymbols ( "T", src="google", auto.assign=FALSE)
+######## load data ########
+#
+stockList <- as.vector(read.csv("constituents.csv", header = TRUE)[,1])#
+tenstocks <- as.vector(stockList[1:10])#
+#
+########################### with packages #############################
+require(quantmod)#
+require(PerformanceAnalytics)#
+#
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench ), error = function (e) NULL) }#
+		else { tryCatch( df <- rbind( df, getBeta ( i, bench ) ), error = function (e) NULL) }#
+	}#
+	return (df)#
+}#
+#
+getSymbols ( "T", src="google", auto.assign=FALSE)#
+#
+getBeta <- function ( symb, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	d <- getSymbols.google ( symb, from = from , to = to, auto.assign=FALSE)#
+	b <- getSymbols.yahoo ( bench, from = from, to = to, auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,4] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,4] )#
+	brd <- dailyReturn ( b[,6] )#
+	if (period = "both") {#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day, beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta Day", "Bull Day", "Bear Day", "Bull:Bear Day", "Beta Month", "Beta Bull Month", "Beta Bear Month", "Bull:Bear Month")#
+	} else if ( period = "daily") {#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day)#
+#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	} else if ( period = "monthly") {#
+#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		betaVec <- c(beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+	}#
+#
+	names (betaVec) <- c( "Beta", "Beta Bull", "Beta Bear", "Bull/Bear Ratio", "Beta Daily", "Beta Bull Daily", "Beta Bear Daily", "Bull/Bear Daily (Ratio)")#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	return (betaVec)#
+}
+######## load data ########
+#
+stockList <- as.vector(read.csv("constituents.csv", header = TRUE)[,1])#
+tenstocks <- as.vector(stockList[1:10])#
+#
+########################### with packages #############################
+require(quantmod)#
+require(PerformanceAnalytics)#
+#
+getBetas <- function ( symbvec, bench ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench ), error = function (e) NULL) }#
+		else { tryCatch( df <- rbind( df, getBeta ( i, bench ) ), error = function (e) NULL) }#
+	}#
+	return (df)#
+}#
+#
+getSymbols ( "T", src="google", auto.assign=FALSE)#
+#
+getBeta <- function ( symb, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	d <- getSymbols.google ( symb, from = from , to = to, auto.assign=FALSE)#
+	b <- getSymbols.yahoo ( bench, from = from, to = to, auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,4] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,4] )#
+	brd <- dailyReturn ( b[,6] )#
+	if (period = "both") {#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day, beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta Day", "Bull Day", "Bear Day", "Bull:Bear Day", "Beta Month", "Beta Bull Month", "Beta Bear Month", "Bull:Bear Month")#
+	} else if ( period = "daily") {#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day)#
+#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	} else if ( period = "monthly") {#
+#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		betaVec <- c(beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	}#
+#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	return (betaVec)#
+}
+getBeta <- function ( symb, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	d <- getSymbols.google ( symb, from = from , to = to, auto.assign=FALSE)#
+	b <- getSymbols.yahoo ( bench, from = from, to = to, auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,4] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,4] )#
+	brd <- dailyReturn ( b[,6] )#
+	if (period == "both") {#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day, beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta Day", "Bull Day", "Bear Day", "Bull:Bear Day", "Beta Month", "Beta Bull Month", "Beta Bear Month", "Bull:Bear Month")#
+	} else if ( period == "daily") {#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day)#
+#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	} else if ( period == "monthly") {#
+#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		betaVec <- c(beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	}#
+#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	return (betaVec)#
+}
+getBeta ("T", "^GSPC")
+getBetas <- function ( symbvec, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench, from, to, period ), error = function (e) NULL) }#
+		else { tryCatch( df <- rbind( df, getBeta ( i, bench, from, to , period ) ), error = function (e) NULL) }#
+	}#
+	return (df)#
+}#
+#
+getSymbols ( "T", src="google", auto.assign=FALSE)#
+#
+getBeta <- function ( symb, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	d <- getSymbols.google ( symb, from = from , to = to, auto.assign=FALSE)#
+	b <- getSymbols.yahoo ( bench, from = from, to = to, auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,4] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,4] )#
+	brd <- dailyReturn ( b[,6] )#
+	if (period == "both") {#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day, beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta Day", "Bull Day", "Bear Day", "Bull:Bear Day", "Beta Month", "Beta Bull Month", "Beta Bear Month", "Bull:Bear Month")#
+	} else if ( period == "daily") {#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day)#
+#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	} else if ( period == "monthly") {#
+#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		betaVec <- c(beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	}#
+#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	return (betaVec)#
+}
+ls()
+Sys.date()
+Sys.Date()
+Sys.Date()-10
+Sys.Date()-1365
+Sys.Date()-365
+write.csv(getBetas ( stockList, "^GSPC", from = "2005-01-01" ), "AllBetasTo2005.csv" )#
+write.csv(getBetas ( stockList, "^GSPC", from = Sys.Date()-365*2, period="daily" ), "DailyBetaForTwoYears.csv" )
+ls()
+Weekly
+glm.fit = glm ( Direction~Lag1 + Lag2 + Lag3 + Lag4 + Lag5 + Volume, data = Weekly, family="binomial")
+summary(glm.fit)
+summary(glm.fit)$coef
+glm.probs=predict(glm.fit,type="response")
+glm.probs
+contrasts(glm.fit)
+contrasts(Direction)
+attach(Weekly)
+Weekly
+contrasts(Direction)
+dim(weekly)
+dim(Weekly)
+dim(weekly)[1]
+dim(Weekly)[1]
+glm.pred=rep("Down", dim(Weekly)[1])#
+glm.pred[glm.pred > 0.5] = "Up"
+table(glm.pred, Direction)
+glm.pred
+glm.pred=rep("Down", dim(Weekly)[1])
+glm.pred[glm.probs > 0.5] = "Up"#
+table(glm.pred, Direction)
+mean(glm.pred == Direction)
+glm.pred[glm.probs > 0.2] = "Up"#
+table(glm.pred, Direction)#
+mean(glm.pred == Direction)
+glm.pred[glm.probs > 0.8] = "Up"#
+table(glm.pred, Direction)#
+mean(glm.pred == Direction)
+glm.pred[glm.probs > 0.5] = "Up"#
+table(glm.pred, Direction)#
+mean(glm.pred == Direction)
+glm.pred[glm.probs > 0.5] = "Up"#
+table(glm.pred, Direction)#
+mean(glm.pred == Direction)
+glm.pred=rep("Down", dim(Weekly)[1])#
+glm.pred[glm.probs > 0.5] = "Up"#
+table(glm.pred, Direction)#
+mean(glm.pred == Direction)
+glm.pred=rep("Down", dim(Weekly)[1])#
+glm.pred[glm.probs > 0.2] = "Up"#
+table(glm.pred, Direction)#
+mean(glm.pred == Direction)
+glm.pred=rep("Down", dim(Weekly)[1])#
+glm.pred[glm.probs > 0.2] = "Up"#
+table(glm.pred, Direction)#
+mean(glm.pred == Direction)
+glm.pred=rep("Down", dim(Weekly)[1])#
+glm.pred[glm.probs > 0.8] = "Up"#
+table(glm.pred, Direction)#
+mean(glm.pred == Direction)
+glm.pred=rep("Down", dim(Weekly)[1])#
+glm.pred[glm.probs > 0.5] = "Up"#
+table(glm.pred, Direction)#
+mean(glm.pred == Direction)
+train  <- ( year < 2009)
+Year
+train  <- ( Year < 2009)
+train
+Weekly[train]
+Weekly[train, ]
+train <- Weekly[train, ]
+Train <- Weekly[train, ]
+train  <- ( Year < 2009)
+Train <- Weekly[train, ]
+glm.fit.training <- glm ( Direction~Lag1 + Lag2 + Lag3 + Lag4 + Lag5 + Volume, data = Train, family="binomial")
+test <- (Year>=2009)
+test
+Test <- Weekly[test, ]
+glm.fit.training <- glm ( Direction ~ Lag2 , data = Train, family="binomial")
+glm.fit.training
+train  <- ( Year < 2009)#
+Train <- Weekly[train, ]#
+glm.fit.training <- glm ( Direction ~ Lag2 , data = Train, family="binomial")
+Test <- Weekly[test, ]
+Test
+Test
+test.pred=rep("Down", dim(Test)[1])
+test.pred
+test.probs <- predict(glm.fit, Test, type="response")
+test.probs
+test.pred[test.probs > 0.5] = "Up"
+test.pred
+table(test.pred, Test$Direction)
+mean(test.pred==Test$Direction)
+library(ISLR)#
+set.seed(1)#
+train=sample(392,196)
+train
+train[392]
+train[train==392]
+train[train==117]
+train==117
+train[train==117]
+sample(1,196)
+sample(2,196)
+sample(2,1)
+sample(2,1)
+sample(2,1)
+sample(2,1)
+sample(2,1)
+sample(2,2)
+sample(2,2)
+sample(2,2)
+sample(2,2)
+sample(2,2)
+sample(100,2)
+sample(100,2)
+sample(100,2)
+sample(100,2)
+sample(100,2)
+Auto
+ls()
+Auto
+attach(Auto)
+horsepower
+lm.fit=lm(mpg∼horsepower ,data=Auto,subset=train)#
+mean((mpg-predict(lm.fit,Auto))[-train]^2)
+mpg
+lm.fit=lm(mpg∼horsepower ,data=Auto,subset=train)
+lm.fit=lm(mpg∼horsepower, data=Auto,subset=train)
+lm.fit=lm(mpg∼horsepower, data="Auto",subset=train)
+train
+lm.fit=lm(mpg∼horsepower, data=Auto,subset="train")
+lm.fit=lm("mpg"∼horsepower, data=Auto,subset=train)
+lm.fit=lm("mpg"∼"horsepower", data=Auto,subset=train)
+lm.fit=lm("mpg∼horsepower", data=Auto,subset=train)
+lm.fit <- lm(mpg∼horsepower, data=Auto,subset=train)
+lm(mpg~horsepower)
+lm.fit <- lm(mpg∼horsepower,subset=train)
+lm.fit <- lm(mpg∼horsepower)
+lm(mpg∼horsepower)
+lm(mpg~horsepower)
+lm.fit <- lm(mpg~horsepower, data = Auto, subset = train)
+(mpg-predict(lm.fit,Auto))[-train]^2
+mean((mpg-predict(lm.fit,Auto))[-train]^2)
+lm
+lm.gt
+lm.fit
+summary(lm.fit)
+summary(glm.fit)
+######## load data ########
+#
+stockList <- as.vector(read.csv("constituents.csv", header = TRUE)[,1])#
+tenstocks <- as.vector(stockList[1:10])#
+#
+########################### with packages #############################
+require(quantmod)#
+require(PerformanceAnalytics)#
+#
+getBetas <- function ( symbvec, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench, from, to, period ), error = function (e) NULL) }#
+		else { tryCatch( df <- rbind( df, getBeta ( i, bench, from, to , period ) ), error = function (e) NULL) }#
+	}#
+	return (df)#
+}#
+#
+getSymbols ( "T", src="google", auto.assign=FALSE)#
+#
+getBeta <- function ( symb, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	d <- getSymbols.google ( symb, from = from , to = to, auto.assign=FALSE)#
+	b <- getSymbols.yahoo ( bench, from = from, to = to, auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,4] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,4] )#
+	brd <- dailyReturn ( b[,6] )#
+	if (period == "both") {#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day, beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta Day", "Bull Day", "Bear Day", "Bull:Bear Day", "Beta Month", "Beta Bull Month", "Beta Bear Month", "Bull:Bear Month")#
+	} else if ( period == "daily") {#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day)#
+#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	} else if ( period == "monthly") {#
+#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		betaVec <- c(beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	}#
+#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	return (betaVec)#
+}#
+#
+####################### Commands#
+#
+write.csv(getBetas ( stockList, "^GSPC", from = "2005-01-01" ), "AllBetasTo2005.csv" )#
+write.csv(getBetas ( stockList, "^GSPC", from = Sys.Date()-365*2, period="daily" ), "DailyBetaForTwoYears.csv" )#
+#
+########################### Started without packages. Then discovered packages. IGNORE BELOW! #######################
+#
+getUrl <- function (symbol) {#
+	url <- paste("http://api.kibot.com/?action=history&symbol=", symbol, "&interval=daily&period=5000", sep = "")NYSE:KO#
+	return(url)#
+}#
+#
+downloadData <- function ( listOfStocks ) { #
+	#This is the master function that downloads all relevant data and applies transformations#
+}#
+#
+percentChange <- function ( list ) {#
+	return ( ( list[, 5] - list[, 2] ) / list [, 2] * 100 )#
+}
+getBeta <- function ( symb, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	d <- getSymbols.google ( symb, from = from , to = to, auto.assign=FALSE)#
+	b <- getSymbols.yahoo ( bench, from = from, to = to, auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,4] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,4] )#
+	brd <- dailyReturn ( b[,6] )#
+	if (period == "both") {#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day, beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta Day", "Bull Day", "Bear Day", "Bull:Bear Day", "Beta Month", "Beta Bull Month", "Beta Bear Month", "Bull:Bear Month")#
+	} else if ( period == "daily") {#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day)#
+#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	} else if ( period == "monthly") {#
+#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		betaVec <- c(beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	}#
+	rownames(betaVec) <- symb#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	return (betaVec)#
+}
+write.csv(getBetas ( stockList, "^GSPC", from = "2005-01-01" ), "AllBetasTo2005.csv" )#
+write.csv(getBetas ( stockList, "^GSPC", from = Sys.Date()-365*2, period="daily" ), "DailyBetaForTwoYears.csv" )
+getBeta( "T", "^GSPC" )
+getBeta( "T", "^GSPC" )
+getBeta <- function ( symb, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	d <- getSymbols.google ( symb, from = from , to = to, auto.assign=FALSE)#
+	b <- getSymbols.yahoo ( bench, from = from, to = to, auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,4] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,4] )#
+	brd <- dailyReturn ( b[,6] )#
+	if (period == "both") {#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day, beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta Day", "Bull Day", "Bear Day", "Bull:Bear Day", "Beta Month", "Beta Bull Month", "Beta Bear Month", "Bull:Bear Month")#
+	} else if ( period == "daily") {#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day)#
+#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	} else if ( period == "monthly") {#
+#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		betaVec <- c(beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	}#
+	print(betaVec)#
+	rownames( betaVec ) <- symb#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	return ( betaVec )#
+}
+getBeta( "T", "^GSPC" )
+test <- getBeta ("T", "^GSPC")
+rownames(test)
+dim(test)
+length(test)
+test
+test
+test
+test <- getBeta ("T", "^GSPC")
+test
+rm ( list = ls() )
+test <- getBeta ("T", "^GSPC")
+getBetas <- function ( symbvec, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench, from, to, period ), error = function (e) NULL) }#
+		else { tryCatch( df <- rbind( df, getBeta ( i, bench, from, to , period ) ), error = function (e) NULL) }#
+	}#
+	return (df)#
+}#
+#
+getSymbols ( "T", src="google", auto.assign=FALSE)#
+#
+getBeta <- function ( symb, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	d <- getSymbols.google ( symb, from = from , to = to, auto.assign=FALSE)#
+	b <- getSymbols.yahoo ( bench, from = from, to = to, auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,4] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,4] )#
+	brd <- dailyReturn ( b[,6] )#
+	if (period == "both") {#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day, beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta Day", "Bull Day", "Bear Day", "Bull:Bear Day", "Beta Month", "Beta Bull Month", "Beta Bear Month", "Bull:Bear Month")#
+	} else if ( period == "daily") {#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day)#
+#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	} else if ( period == "monthly") {#
+#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		betaVec <- c(beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	}#
+	rownames( betaVec ) <- symb#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	return ( betaVec )#
+}
+stockList
+stockList <- as.vector(read.csv("constituents.csv", header = TRUE)[,1])#
+tenstocks <- as.vector(stockList[1:10])
+stockList
+tenstocks
+getBeta("T", "^GSPC")
+test
+######## load data ########
+#
+stockList <- as.vector(read.csv("constituents.csv", header = TRUE)[,1])#
+tenstocks <- as.vector(stockList[1:10])#
+#
+########################### with packages #############################
+require(quantmod)#
+require(PerformanceAnalytics)#
+#
+getBetas <- function ( symbvec, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench, from, to, period ), error = function (e) NULL) }#
+		else { tryCatch( df <- rbind( df, getBeta ( i, bench, from, to , period ) ), error = function (e) NULL) }#
+	}#
+	return (df)#
+}#
+#
+getSymbols ( "T", src="google", auto.assign=FALSE)#
+#
+getBeta <- function ( symb, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	d <- getSymbols.google ( symb, from = from , to = to, auto.assign=FALSE)#
+	b <- getSymbols.yahoo ( bench, from = from, to = to, auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,4] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,4] )#
+	brd <- dailyReturn ( b[,6] )#
+	if (period == "both") {#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day, beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta Day", "Bull Day", "Bear Day", "Bull:Bear Day", "Beta Month", "Beta Bull Month", "Beta Bear Month", "Bull:Bear Month")#
+	} else if ( period == "daily") {#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day)#
+#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	} else if ( period == "monthly") {#
+#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		betaVec <- c(beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	}#
+	rownames( betaVec ) <- symb#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	return ( betaVec )#
+}
+test<-getBeta("T", "^GSPC")
+test
+getBeta <- function ( symb, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	d <- getSymbols.google ( symb, from = from , to = to, auto.assign=FALSE)#
+	b <- getSymbols.yahoo ( bench, from = from, to = to, auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,4] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,4] )#
+	brd <- dailyReturn ( b[,6] )#
+	if (period == "both") {#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day, beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta Day", "Bull Day", "Bear Day", "Bull:Bear Day", "Beta Month", "Beta Bull Month", "Beta Bear Month", "Bull:Bear Month")#
+	} else if ( period == "daily") {#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day)#
+#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	} else if ( period == "monthly") {#
+#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		betaVec <- c(beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	}#
+	names(betaVec) <- symb#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	return ( betaVec )#
+}
+test<-getBeta("T", "^GSPC")
+test
+rownames(test)
+######## load data ########
+#
+stockList <- as.vector(read.csv("constituents.csv", header = TRUE)[,1])#
+tenstocks <- as.vector(stockList[1:10])#
+#
+########################### with packages #############################
+require(quantmod)#
+require(PerformanceAnalytics)#
+#
+getBetas <- function ( symbvec, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	df <- data.frame(NULL)#
+	for ( i in symbvec ) {#
+		if (nrow(df)==0) { tryCatch( df <- getBeta ( i, bench, from, to, period ), error = function (e) NULL) }#
+		else { tryCatch( df <- rbind( df, getBeta ( i, bench, from, to , period ) ), error = function (e) NULL) }#
+	}#
+	return (df)#
+}#
+#
+getBeta <- function ( symb, bench, from = "2007-01-01", to = Sys.Date(), period = "both" ) {#
+	d <- getSymbols.google ( symb, from = from , to = to, auto.assign=FALSE)#
+	b <- getSymbols.yahoo ( bench, from = from, to = to, auto.assign=FALSE)#
+	dr <- monthlyReturn ( d[,4] )#
+	br <- monthlyReturn ( b[,6] )#
+	drd <- dailyReturn ( d[,4] )#
+	brd <- dailyReturn ( b[,6] )#
+	if (period == "both") {#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day, beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta Day", "Bull Day", "Bear Day", "Bull:Bear Day", "Beta Month", "Beta Bull Month", "Beta Bear Month", "Bull:Bear Month")#
+	} else if ( period == "daily") {#
+		beta_day <- round( CAPM.beta ( drd, brd ), digits = 3 )#
+		bull_day <- round( CAPM.beta.bull ( drd, brd ), digits = 3 ) #
+		bear_day <- round( CAPM.beta.bear ( drd, brd ), digits = 3 )#
+		bull_bear_ratio_day <- round( bull_day / bear_day , digits = 3 )#
+		betaVec <- c(beta_day, bull_day, bear_day, bull_bear_ratio_day)#
+#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	} else if ( period == "monthly") {#
+#
+		beta_month <- round( CAPM.beta ( dr, br ), digits = 3 )#
+		bull_month <- round( CAPM.beta.bull ( dr, br ), digits = 3 ) #
+		bear_month <- round( CAPM.beta.bear ( dr, br ), digits = 3 )#
+		bull_bear_ratio_month <- round( bull_month / bear_month, digits = 3 )#
+		betaVec <- c(beta_month, bull_month, bear_month, bull_bear_ratio_month)#
+		names (betaVec) <- c( "Beta", "Bull", "Bear", "Bull:Bear")#
+	}#
+	betaVec <- as.data.frame ( t ( betaVec ) )#
+	rownames(betaVec) <- symb#
+	return ( betaVec )#
+}
+write.csv(getBetas ( stockList, "^GSPC", from = "2005-01-01" ), "AllBetasTo2005.csv" )#
+write.csv(getBetas ( stockList, "^GSPC", from = Sys.Date()-365*2, period="daily" ), "DailyBetaForTwoYears.csv" )
