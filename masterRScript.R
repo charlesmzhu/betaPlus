@@ -75,10 +75,45 @@ getBeta <- function ( symb, bench, from = "2007-01-01", to = Sys.Date(), period 
 	
 }
 
-####################### Commands
+####################### Commands for saving data
 
 write.csv(getBetas ( stockList, "^GSPC", from = "2005-01-01" ), "AllBetasTo2005.csv" )
 write.csv(getBetas ( stockList, "^GSPC", from = Sys.Date()-365*2, period="daily" ), "DailyBetaForTwoYears.csv" )
+
+####################### Backtesting
+
+require(quantmod)
+require(PerformanceAnalytics)
+# Step 1: Get the data
+getSymbols("^GSPC")
+
+# Step 2: Create your indicator
+dvi <- DVI(Cl(GSPC))
+
+# Step 3: Construct your trading rule
+sig <- Lag(ifelse(dvi$dvi < 0.5, 1, -1))
+
+# Step 4: The trading rules/equity curve
+# ROC calculates returns on the day
+ret <- ROC(Cl(GSPC))*sig
+# Restricts to the dates below
+ret <- ret['2009-06-02/2010-09-07']
+# Takes cumulative sum of returns
+eq <- exp(cumsum(ret))
+plot(eq)
+
+# Step 5: Evaluate strategy performance
+table.Drawdowns(ret, top=10)
+table.DownsideRisk(ret)
+charts.PerformanceSummary(ret)
+
+# take four three-month periods. Calculate 2 highest beta stocks + 2 lowest beta ratio (negative) ratio stocks IF bear beta is negative for each. Calculate returns for the next three months, assuming 25% split for each.
+
+# start with taking current list and back test on quarter starting 1/1/2015 and compare against S%P
+
+
+
+
 
 ########################### Started without packages. Then discovered packages. IGNORE BELOW! ######################
 
